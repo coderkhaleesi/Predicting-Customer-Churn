@@ -142,6 +142,7 @@ def test_train_models(train_models):
         # Getting the list of directories
         dir_val = os.listdir(path)
         assert len(dir_val) > 0
+        logging.info("Testing train_models results: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing train_models: Results image files not found")
         raise err
@@ -151,7 +152,7 @@ def test_train_models(train_models):
         # Getting the list of directories
         dir_val = os.listdir(path)
         assert len(dir_val) > 0
-        logging.info("Testing train_models: SUCCESS")
+        logging.info("Testing train_models models: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing train_models: Model files not found")
         raise err
