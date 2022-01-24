@@ -62,6 +62,8 @@ I learned how to properly use fixtures.
 
 Some advice [here](https://www.analyticsvidhya.com/blog/2022/01/writing-test-cases-for-machine-learning/), [here](https://www.seanh.cc/2017/02/12/advanced-fixtures/#:~:text=A%20fixture%20can%20use%20multiple,fixture%20value%20that%20it%20returns.), [here](https://madewithml.com/courses/mlops/testing/), and [here](https://towardsdatascience.com/make-your-python-tests-efficient-with-pytest-fixtures-3d7a1892265f)
 
+More [here](https://www.youtube.com/watch?v=ErS0PPfLFLI&ab_channel=PyCharmbyJetBrains), and [here](https://docs.pytest.org/en/6.2.x/parametrize.html).
+
 Please make sure to update tests as appropriate.
 
 ## License
