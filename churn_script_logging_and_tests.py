@@ -159,6 +159,8 @@ def test_train_models(train_models):
 
 
 if __name__ == "__main__":
+
+    os.mkdir('logs')
     
     test_eda(cl.perform_eda, data)
 
