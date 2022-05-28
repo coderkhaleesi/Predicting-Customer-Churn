@@ -1,8 +1,15 @@
+"""
+Author: Tanya Dixit
+
+This module is for testing.
+
+"""
+
 import os
 import logging
-import churn_library as cl
-
 import pytest
+
+import churn_library as cl
 
 logging.basicConfig(
     filename='./logs/churn_library.log',
@@ -13,21 +20,38 @@ logging.basicConfig(
 
 @pytest.fixture
 def import_data():
+    """
+        Function to import data.
+
+        Using pytest fixture makes sure we only load it once.
+    """
+
     data = cl.import_data(os.path.join("data", "bank_data.csv"))
     return data
 
+
 @pytest.fixture
 def perform_eda(import_data):
-    data = import_data
-    data['Churn'] = data['Attrition_Flag'].apply(
+    """
+        Function to perform eda and test.
+    """
+
+    #data = import_data
+    import_data['Churn'] = import_data['Attrition_Flag'].apply(
         lambda val: 0 if val == "Existing Customer" else 1)
 
-    cl.perform_eda(data)
-    return data
+    cl.perform_eda(import_data)
+    return import_data
+
 
 @pytest.fixture
 def encoder_helper(perform_eda):
-    data = perform_eda
+    '''
+        Helper function to encode data
+        and return encoded data.
+    '''
+
+    #data_after_eda = perform_eda
 
     cat_columns = [
         'Gender',
@@ -36,20 +60,29 @@ def encoder_helper(perform_eda):
         'Income_Category',
         'Card_Category']
 
-    data = cl.encoder_helper(data, cat_columns)
-    return data
+    encoded_data = cl.encoder_helper(perform_eda, cat_columns)
+    return encoded_data
+
 
 @pytest.fixture
 def perform_feature_engineering(encoder_helper):
-    data = encoder_helper
+    '''
+        Helper function to perform feature engineering.
+    '''
 
-    return cl.perform_feature_engineering(data)
+    #encoded_data = encoder_helper
+
+    return cl.perform_feature_engineering(encoder_helper)
+
 
 @pytest.fixture
 def train_models(perform_feature_engineering):
-    X_train, X_test, y_train, y_test = perform_feature_engineering
-    cl.train_models(X_train, X_test, y_train, y_test)
+    '''
+        Helper function to train models.
+    '''
 
+    x_train, x_test, y_train, y_test = perform_feature_engineering
+    cl.train_models(x_train, x_test, y_train, y_test)
 
 
 def test_import(import_data):
@@ -57,24 +90,24 @@ def test_import(import_data):
     test data import - this example is completed for you to assist with the other test functions
     '''
     try:
-        df_data = import_data
+        #df_data = import_data
         logging.info("Testing import_data: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing import_eda: The file wasn't found")
         raise err
 
     try:
-        assert df_data.shape[0] > 0
-        assert df_data.shape[1] > 0
+        assert import_data.shape[0] > 0
+        assert import_data.shape[1] > 0
     except AssertionError as err:
         logging.error(
             "Testing import_data: The file doesn't appear to have rows and columns")
         raise err
 
-    return df_data
+    return import_data
 
 
-def test_eda(perform_eda):
+def test_eda():
     '''
     test perform eda function
     '''
@@ -96,8 +129,8 @@ def test_encoder_helper(encoder_helper):
     '''
     test encoder helper
     '''
-    
-    df_data = encoder_helper
+
+    #df_data = encoder_helper
 
     cat_columns = [
         'Gender_Churn',
@@ -108,13 +141,13 @@ def test_encoder_helper(encoder_helper):
 
     try:
         for col in cat_columns:
-            assert col in df_data.columns
+            assert col in encoder_helper.columns
         logging.info("Testing encoder_helper: SUCCESS")
     except AssertionError as err:
         logging.error("Testing cols: Cannot find columns")
         return err
 
-    return df_data
+    return encoder_helper
 
 
 def test_perform_feature_engineering(perform_feature_engineering):
@@ -122,10 +155,10 @@ def test_perform_feature_engineering(perform_feature_engineering):
     test perform_feature_engineering
     '''
 
-    X_train, X_test, y_train, y_test = perform_feature_engineering
+    x_train, _, _, _ = perform_feature_engineering
 
     try:
-        assert X_train.shape[1] == 19
+        assert x_train.shape[1] == 19
         logging.info("Testing encoder_helper: SUCCESS")
     except AssertionError as err:
         logging.error(
@@ -160,13 +193,14 @@ def test_train_models(train_models):
 
 if __name__ == "__main__":
 
-    os.mkdir('logs')
-    
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+
     test_eda(cl.perform_eda, data)
 
-    data = test_encoder_helper(cl.encoder_helper, data)
+    en_data = test_encoder_helper(cl.encoder_helper, data)
 
     X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = test_perform_feature_engineering(
-        cl.perform_feature_engineering, data)
+        cl.perform_feature_engineering, en_data)
 
     test_train_models(cl.train_models, X_TRAIN, X_TEST, Y_TRAIN, Y_TEST)

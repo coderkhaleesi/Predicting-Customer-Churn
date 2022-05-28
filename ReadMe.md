@@ -22,6 +22,8 @@ python3 -m pytest churn_script_logging_and_tests.py
 
 ```
 
+![pytest_result](images/pytest.png)
+
 ## Results
 
 ### Exploratory Data Analysis
