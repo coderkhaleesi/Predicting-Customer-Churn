@@ -36,7 +36,6 @@ def perform_eda(import_data):
         Function to perform eda and test.
     """
 
-    #data = import_data
     import_data['Churn'] = import_data['Attrition_Flag'].apply(
         lambda val: 0 if val == "Existing Customer" else 1)
 
@@ -50,8 +49,6 @@ def encoder_helper(perform_eda):
         Helper function to encode data
         and return encoded data.
     '''
-
-    #data_after_eda = perform_eda
 
     cat_columns = [
         'Gender',
@@ -69,8 +66,6 @@ def perform_feature_engineering(encoder_helper):
     '''
         Helper function to perform feature engineering.
     '''
-
-    #encoded_data = encoder_helper
 
     return cl.perform_feature_engineering(encoder_helper)
 
@@ -90,7 +85,7 @@ def test_import(import_data):
     test data import - this example is completed for you to assist with the other test functions
     '''
     try:
-        #df_data = import_data
+
         logging.info("Testing import_data: SUCCESS")
     except FileNotFoundError as err:
         logging.error("Testing import_eda: The file wasn't found")
@@ -130,8 +125,6 @@ def test_encoder_helper(encoder_helper):
     test encoder helper
     '''
 
-    #df_data = encoder_helper
-
     cat_columns = [
         'Gender_Churn',
         'Education_Level_Churn',
@@ -170,6 +163,7 @@ def test_train_models(train_models):
     '''
     test train_models
     '''
+
     path = "./images/results/"
     try:
         # Getting the list of directories
